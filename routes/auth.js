@@ -12,6 +12,7 @@ router.get('/',(req,res) =>{
 //@desc     Auth user and get token
 //@access   public
 router.post('/',(req,res) =>{
+    console.log(req.body);
     res.send('log in user')
 })
 
