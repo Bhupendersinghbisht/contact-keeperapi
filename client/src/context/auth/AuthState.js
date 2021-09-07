@@ -32,9 +32,7 @@ const AuthState = props  =>{
     const loadUser= async() =>{
         //@todo --load token into global header
         console.log('data...',localStorage)
-        if(localStorage.token){
-            setAuthToken(localStorage)
-        }
+        setAuthToken(localStorage.token);
         try {
             const res=await axios.get('http://localhost:5001/api/auth')
             console.log('ress..',res)
@@ -59,10 +57,11 @@ const AuthState = props  =>{
         }
         try {
             const res=await axios.post('http://localhost:5001/api/users',formData,config);
-            console.log('res..',res)
+            console.log('response from post..',res)
+            //console.log('MYTOKEN',localStorage.getItem('access-token'));
             dispatch({
                 type:REGISTER_SUCCESS,
-                payload:res.data.token
+                payload:res.data
             })
             loadUser();
         } catch (error) {
@@ -82,19 +81,25 @@ const AuthState = props  =>{
             }
             }
             try{
-const res=await axios.get('http://localhost:5001/api/users',formData,config)
-console.log(res);
-
-
+const res=await axios.post('http://localhost:5001/api/auth',formData,config)
+console.log('login response',res); 
+dispatch({
+    type:LOGIN_SUCCESS,
+    payload:res.data
+})
+loadUser()
             }
             catch(error){
-
+                dispatch({
+                    type:LOGIN_FAIL,
+                    payload:error.response.data.msg
+                })                
             }
 
     }
     //Logout User
     const logout= () =>{
-        console.log('logout')
+        console.log('logout'
     }
     //Clear Errors
     const clearError= () =>dispatch({type:CLEAR_ERRORS})
